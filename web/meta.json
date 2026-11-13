@@ -1,0 +1,424 @@
+{
+  "title": "Heart Disease Risk Predictor",
+  "subtitle": "Estimates the chance of coronary heart disease from 13 routine clinical measurements, using the classic UCI Cleveland patient data.",
+  "tags": [
+    "Classification",
+    "scikit-learn",
+    "Logistic Regression",
+    "Decision Tree",
+    "Nested CV",
+    "ONNX"
+  ],
+  "task": "classification",
+  "classes": [
+    0,
+    1
+  ],
+  "positive_class": 1,
+  "output_label": "Estimated probability of heart disease",
+  "verdicts": [
+    "Low estimated risk",
+    "Moderate estimated risk",
+    "High estimated risk"
+  ],
+  "thresholds": [
+    0.3,
+    0.6
+  ],
+  "result_note": "<b>Not medical advice.</b> This is a learning project trained on 303 patients from a 1988 study; it cannot diagnose anyone. If you have heart symptoms, see a doctor.",
+  "features": [
+    {
+      "name": "age",
+      "label": "Age",
+      "help": "years",
+      "type": "number",
+      "min": 29.0,
+      "max": 77.0,
+      "step": 1,
+      "default": 55
+    },
+    {
+      "name": "sex",
+      "label": "Sex",
+      "type": "category",
+      "options": [
+        "Female",
+        "Male"
+      ],
+      "default": "Male"
+    },
+    {
+      "name": "chest_pain",
+      "label": "Chest pain type",
+      "type": "category",
+      "options": [
+        "Asymptomatic",
+        "Atypical angina",
+        "Non-anginal pain",
+        "Typical angina"
+      ],
+      "default": "Asymptomatic"
+    },
+    {
+      "name": "resting_bp",
+      "label": "Resting blood pressure",
+      "help": "mm Hg",
+      "type": "number",
+      "min": 94.0,
+      "max": 200.0,
+      "step": 1,
+      "default": 130
+    },
+    {
+      "name": "cholesterol",
+      "label": "Serum cholesterol",
+      "help": "mg/dl",
+      "type": "number",
+      "min": 126.0,
+      "max": 564.0,
+      "step": 1,
+      "default": 244
+    },
+    {
+      "name": "high_fasting_sugar",
+      "label": "Fasting blood sugar > 120 mg/dl",
+      "type": "category",
+      "options": [
+        "No",
+        "Yes"
+      ],
+      "default": "No"
+    },
+    {
+      "name": "rest_ecg",
+      "label": "Resting ECG",
+      "type": "category",
+      "options": [
+        "Left ventricular hypertrophy",
+        "Normal",
+        "ST-T wave abnormality"
+      ],
+      "default": "Normal"
+    },
+    {
+      "name": "max_heart_rate",
+      "label": "Max heart rate (exercise test)",
+      "help": "bpm",
+      "type": "number",
+      "min": 88.0,
+      "max": 202.0,
+      "step": 1,
+      "default": 152
+    },
+    {
+      "name": "exercise_angina",
+      "label": "Chest pain during exercise",
+      "type": "category",
+      "options": [
+        "No",
+        "Yes"
+      ],
+      "default": "No"
+    },
+    {
+      "name": "st_depression",
+      "label": "ST depression",
+      "help": "mm, exercise vs rest",
+      "type": "number",
+      "min": 0.0,
+      "max": 6.2,
+      "step": "any",
+      "default": 0.8
+    },
+    {
+      "name": "st_slope",
+      "label": "ST segment slope (peak exercise)",
+      "type": "category",
+      "options": [
+        "Downsloping",
+        "Flat",
+        "Upsloping"
+      ],
+      "default": "Flat"
+    },
+    {
+      "name": "major_vessels",
+      "label": "Major vessels seen on fluoroscopy",
+      "help": "0\u20133",
+      "type": "category",
+      "options": [
+        "0",
+        "1",
+        "2",
+        "3"
+      ],
+      "default": "0"
+    },
+    {
+      "name": "thallium_test",
+      "label": "Thallium stress test",
+      "type": "category",
+      "options": [
+        "Fixed defect",
+        "Normal",
+        "Reversible defect"
+      ],
+      "default": "Normal"
+    }
+  ],
+  "examples": [
+    {
+      "age": 71.0,
+      "sex": "Female",
+      "chest_pain": "Asymptomatic",
+      "resting_bp": 112.0,
+      "cholesterol": 149.0,
+      "high_fasting_sugar": "No",
+      "rest_ecg": "Normal",
+      "max_heart_rate": 125.0,
+      "exercise_angina": "No",
+      "st_depression": 1.6,
+      "st_slope": "Flat",
+      "major_vessels": "0",
+      "thallium_test": "Normal"
+    },
+    {
+      "age": 62.0,
+      "sex": "Female",
+      "chest_pain": "Asymptomatic",
+      "resting_bp": 140.0,
+      "cholesterol": 268.0,
+      "high_fasting_sugar": "No",
+      "rest_ecg": "Left ventricular hypertrophy",
+      "max_heart_rate": 160.0,
+      "exercise_angina": "No",
+      "st_depression": 3.6,
+      "st_slope": "Downsloping",
+      "major_vessels": "2",
+      "thallium_test": "Normal"
+    },
+    {
+      "age": 56.0,
+      "sex": "Male",
+      "chest_pain": "Asymptomatic",
+      "resting_bp": 130.0,
+      "cholesterol": 283.0,
+      "high_fasting_sugar": "Yes",
+      "rest_ecg": "Left ventricular hypertrophy",
+      "max_heart_rate": 103.0,
+      "exercise_angina": "Yes",
+      "st_depression": 1.6,
+      "st_slope": "Downsloping",
+      "major_vessels": "0",
+      "thallium_test": "Reversible defect"
+    },
+    {
+      "age": 62.0,
+      "sex": "Male",
+      "chest_pain": "Non-anginal pain",
+      "resting_bp": 130.0,
+      "cholesterol": 231.0,
+      "high_fasting_sugar": "No",
+      "rest_ecg": "Normal",
+      "max_heart_rate": 146.0,
+      "exercise_angina": "No",
+      "st_depression": 1.8,
+      "st_slope": "Flat",
+      "major_vessels": "3",
+      "thallium_test": "Reversible defect"
+    },
+    {
+      "age": 58.0,
+      "sex": "Female",
+      "chest_pain": "Typical angina",
+      "resting_bp": 150.0,
+      "cholesterol": 283.0,
+      "high_fasting_sugar": "Yes",
+      "rest_ecg": "Left ventricular hypertrophy",
+      "max_heart_rate": 162.0,
+      "exercise_angina": "No",
+      "st_depression": 1.0,
+      "st_slope": "Upsloping",
+      "major_vessels": "0",
+      "thallium_test": "Normal"
+    },
+    {
+      "age": 41.0,
+      "sex": "Male",
+      "chest_pain": "Atypical angina",
+      "resting_bp": 120.0,
+      "cholesterol": 157.0,
+      "high_fasting_sugar": "No",
+      "rest_ecg": "Normal",
+      "max_heart_rate": 182.0,
+      "exercise_angina": "No",
+      "st_depression": 0.0,
+      "st_slope": "Upsloping",
+      "major_vessels": "0",
+      "thallium_test": "Normal"
+    },
+    {
+      "age": 56.0,
+      "sex": "Male",
+      "chest_pain": "Atypical angina",
+      "resting_bp": 130.0,
+      "cholesterol": 221.0,
+      "high_fasting_sugar": "No",
+      "rest_ecg": "Left ventricular hypertrophy",
+      "max_heart_rate": 163.0,
+      "exercise_angina": "No",
+      "st_depression": 0.0,
+      "st_slope": "Upsloping",
+      "major_vessels": "0",
+      "thallium_test": "Reversible defect"
+    },
+    {
+      "age": 34.0,
+      "sex": "Male",
+      "chest_pain": "Typical angina",
+      "resting_bp": 118.0,
+      "cholesterol": 182.0,
+      "high_fasting_sugar": "No",
+      "rest_ecg": "Left ventricular hypertrophy",
+      "max_heart_rate": 174.0,
+      "exercise_angina": "No",
+      "st_depression": 0.0,
+      "st_slope": "Upsloping",
+      "major_vessels": "0",
+      "thallium_test": "Normal"
+    },
+    {
+      "age": 42.0,
+      "sex": "Male",
+      "chest_pain": "Non-anginal pain",
+      "resting_bp": 130.0,
+      "cholesterol": 180.0,
+      "high_fasting_sugar": "No",
+      "rest_ecg": "Normal",
+      "max_heart_rate": 150.0,
+      "exercise_angina": "No",
+      "st_depression": 0.0,
+      "st_slope": "Upsloping",
+      "major_vessels": "0",
+      "thallium_test": "Normal"
+    },
+    {
+      "age": 57.0,
+      "sex": "Male",
+      "chest_pain": "Atypical angina",
+      "resting_bp": 154.0,
+      "cholesterol": 232.0,
+      "high_fasting_sugar": "No",
+      "rest_ecg": "Left ventricular hypertrophy",
+      "max_heart_rate": 164.0,
+      "exercise_angina": "No",
+      "st_depression": 0.0,
+      "st_slope": "Upsloping",
+      "major_vessels": "1",
+      "thallium_test": "Normal"
+    },
+    {
+      "age": 58.0,
+      "sex": "Female",
+      "chest_pain": "Asymptomatic",
+      "resting_bp": 130.0,
+      "cholesterol": 197.0,
+      "high_fasting_sugar": "No",
+      "rest_ecg": "Normal",
+      "max_heart_rate": 131.0,
+      "exercise_angina": "No",
+      "st_depression": 0.6,
+      "st_slope": "Flat",
+      "major_vessels": "0",
+      "thallium_test": "Normal"
+    },
+    {
+      "age": 52.0,
+      "sex": "Male",
+      "chest_pain": "Asymptomatic",
+      "resting_bp": 112.0,
+      "cholesterol": 230.0,
+      "high_fasting_sugar": "No",
+      "rest_ecg": "Normal",
+      "max_heart_rate": 160.0,
+      "exercise_angina": "No",
+      "st_depression": 0.0,
+      "st_slope": "Upsloping",
+      "major_vessels": "1",
+      "thallium_test": "Normal"
+    }
+  ],
+  "model_name": "Logistic Regression",
+  "comparison": [
+    {
+      "model": "Logistic Regression",
+      "ROC-AUC": 0.9155322455322457,
+      "F1": 0.8288556470607402,
+      "Accuracy": 0.8495578231292517
+    },
+    {
+      "model": "Random Forest",
+      "ROC-AUC": 0.9130199430199429,
+      "F1": 0.8065859028364305,
+      "Accuracy": 0.8248639455782313
+    },
+    {
+      "model": "Decision Tree (tuned)",
+      "ROC-AUC": 0.8400621600621601,
+      "F1": 0.7329650695741375,
+      "Accuracy": 0.7653061224489797
+    }
+  ],
+  "test_metrics": {
+    "ROC-AUC": 0.9361471861471862,
+    "Accuracy": 0.8360655737704918,
+    "Precision": 0.8461538461538461,
+    "Recall": 0.7857142857142857,
+    "F1": 0.8148148148148148
+  },
+  "metric_formats": {
+    "Accuracy": "percent",
+    "Precision": "percent",
+    "Recall": "percent",
+    "F1": "percent"
+  },
+  "metrics_note": "Scores on a held-out test set of 61 patients the model never saw during training.",
+  "figures": [
+    {
+      "src": "assets/decision_tree.png",
+      "caption": "The tuned decision tree: readable if-then rules (top levels)."
+    },
+    {
+      "src": "assets/feature_importance.png",
+      "caption": "What drives the prediction the most."
+    },
+    {
+      "src": "assets/disease_by_chest_pain.png",
+      "caption": "Patients with no chest pain (asymptomatic) were most often diagnosed."
+    },
+    {
+      "src": "assets/roc_curve.png",
+      "caption": "ROC curve on the test set: final model vs the single tree."
+    },
+    {
+      "src": "assets/confusion_matrix.png",
+      "caption": "Correct and wrong predictions on the test set."
+    }
+  ],
+  "steps": [
+    "Loaded 303 patients (UCI Cleveland) and decoded the numeric codes into readable categories, checking each mapping against the original UCI file (the target turned out to be inverted).",
+    "Built one scikit-learn Pipeline: scaling for numbers, one-hot encoding for categories.",
+    "Tuned a Decision Tree with GridSearchCV inside each fold (nested CV) and compared it with Logistic Regression and Random Forest using 5\u00d75 repeated stratified cross-validation.",
+    "Picked Logistic Regression by ROC-AUC and evaluated it once on a held-out 20% test set.",
+    "Visualised the tuned tree and explained the model with permutation importance.",
+    "Exported the whole pipeline to ONNX so it runs in the browser \u2014 no server needed."
+  ],
+  "dataset": {
+    "name": "UCI Heart Disease (Cleveland)",
+    "url": "https://archive.ics.uci.edu/dataset/45/heart+disease",
+    "rows": 303
+  },
+  "repo_url": "https://github.com/ravshanovna-d/heart-disease-predictor",
+  "notebook_url": "https://github.com/ravshanovna-d/heart-disease-predictor/blob/main/notebook.ipynb",
+  "footer": "Built by <a href=\"https://github.com/ravshanovna-d\">ravshanovna-d</a>"
+}
