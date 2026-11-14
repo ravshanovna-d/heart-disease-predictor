@@ -2,7 +2,7 @@
 
 Estimates the chance of coronary heart disease from 13 routine clinical measurements, using the classic UCI Cleveland patient data.
 
-**[Live demo →](LIVE_DEMO_URL)** — fill in a patient profile (age, blood pressure, cholesterol, exercise-test results…) and get a probability instantly. The model runs in your browser (ONNX Runtime Web), no server needed.
+**[Live demo →](https://ravshanovna-heart-disease.vercel.app)** — fill in a patient profile (age, blood pressure, cholesterol, exercise-test results…) and get a probability instantly. The model runs in your browser (ONNX Runtime Web), no server needed.
 
 > **Not medical advice.** This is a learning project trained on 303 patients from a 1988 study. It cannot diagnose anyone.
 
